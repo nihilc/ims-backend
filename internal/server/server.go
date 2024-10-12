@@ -6,15 +6,18 @@ import (
 	"time"
 
 	"github.com/nihilc/ims-backend/config"
+	"github.com/nihilc/ims-backend/internal/storage"
 )
 
 type Server struct {
 	port int
+	db   *storage.Storage
 }
 
-func NewServer() *http.Server {
+func NewServer(db *storage.Storage) *http.Server {
 	s := Server{
 		port: config.Env.Port,
+		db:   db,
 	}
 
 	return &http.Server{
