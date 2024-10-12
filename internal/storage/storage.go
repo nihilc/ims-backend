@@ -2,8 +2,10 @@ package storage
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/nihilc/ims-backend/config"
+	"github.com/nihilc/ims-backend/internal/storage/postgres"
 )
 
 var ErrUnsuportedDatabaseType = fmt.Errorf("unsupported database type")
@@ -24,7 +26,18 @@ func NewStorage() (*Storage, error) {
 	case Mysql:
 		return nil, nil
 	case Postgres:
-		return nil, nil
+		_, err := postgres.NewPostgresStorage(postgres.PostgresConfig{
+			Username: config.Env.DBUsername,
+			Password: config.Env.DBPassword,
+			Host:     config.Env.DBHost,
+			Port:     config.Env.DBPort,
+			Name:     config.Env.DBName,
+		})
+		if err != nil {
+			return nil, err
+		}
+		log.Printf("DB %s: Successfully connected!", dbType)
+		return &Storage{}, nil
 	default:
 		return nil, ErrUnsuportedDatabaseType
 	}
