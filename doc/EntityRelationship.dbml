@@ -1,0 +1,134 @@
+// Usign dbml to define structure
+// Viewer: https://dbdiagram.io
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table roles {
+  id serial [pk]
+  name varchar [not null]
+  description text
+}
+
+Table permissions {
+  id serial [pk]
+  permission varchar [not null]
+}
+
+Table roles_permissions {
+  id serial
+  role_id integer [not null, ref: >roles.id]
+  perrmission_id integer [not null, ref: > permissions.id]
+
+  indexes {
+    (role_id, perrmission_id) [pk]
+  }
+}
+
+Table users {
+  id serial
+  role_id integer [ref: > roles.id]
+  worker_id integer [ref: - workers.id]
+  username varchar [not null]
+  password varchar [not null]
+
+  createdAt timestamp [default: 'now()']
+  updatedAt timestamp [note: 'managed by trigger']
+  deletedAt timestamp
+
+  indexes {
+    id [pk]
+    username [unique]
+  }
+}
+
+Table workers {
+  id serial
+  branch_id integer [ref: > branches.id]
+  icard varchar [not null]
+  firstName varchar [not null]
+  lastName varchar [not null]
+  email varchar [not null]
+  phone varchar [not null]
+
+  createdAt timestamp [default: 'now()']
+  updatedAt timestamp [note: 'managed by trigger']
+  deletedAt timestamp
+
+  indexes {
+    id [pk]
+    icard [unique]
+  }
+}
+
+Table branches{
+  id serial [pk]
+  name varchar [not null]
+  location varchar [not null]
+}
+
+Table categories {
+  id serial [pk]
+  name varchar [not null]
+}
+
+Table attributes {
+  id serial [pk]
+  category_id integer [not null, ref: > categories.id]
+  required bool [default: false]
+  name varchar [not null]
+}
+
+Enum itemStatus {
+  active
+  inactive
+  discarted
+}
+
+Table items{
+  id serial
+  category_id integer [ref: > categories.id]
+  branch_id integer [ref: > branches.id]
+  cod varchar [not null]
+  status itemStatus [not null]
+
+  indexes {
+    id [pk]
+    cod [unique]
+  }
+}
+
+Table items_attributes {
+  id serial
+  item_id integer [not null, ref: > items.id]
+  attribute_id integer [not null, ref: > attributes.id]
+  value text
+
+  indexes {
+    (item_id, attribute_id) [pk]
+  }
+}
+
+Enum transactionType {
+  assignment
+  return
+}
+
+Table transactions {
+  id serial [pk]
+  user_id integer [not null, ref: > users.id, note: 'user who made the transaction']
+  worker_id integer [not null, ref: > workers.id, note: 'worker to assign/return items']
+  branch_id integer [not null, ref: > branches.id, note: 'branch where the items were assigned/returned']
+  type transactionType
+  date date [not null]
+  note text
+}
+
+Table transactions_items {
+  id serial
+  transaction_id integer [not null, ref: > transactions.id]
+  item_id integer [not null, ref: > items.id]
+  condition text
+
+  indexes {
+    (transaction_id, item_id) [pk]
+  }
+}
