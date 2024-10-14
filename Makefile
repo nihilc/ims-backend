@@ -6,3 +6,9 @@ run: build
 
 test:
 	@go test -v ./...
+
+migrate:
+	@go run ./cmd/migrate/main.go $(filter-out $@,$(MAKECMDGOALS))
+
+%:
+	@:
