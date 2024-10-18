@@ -9,7 +9,7 @@ import (
 	"github.com/nihilc/ims-backend/config"
 )
 
-func NewMySQLStorage(cfg *dmysql.Config) (*sql.DB, error) {
+func NewMySQLConnection(cfg *dmysql.Config) (*sql.DB, error) {
 	var db *sql.DB
 	var err error
 	// load default if there isn't config

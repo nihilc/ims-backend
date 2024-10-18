@@ -28,14 +28,14 @@ func NewStorage() (*Storage, error) {
 	dbType := dbType(config.Env.DBType)
 	switch dbType {
 	case Mysql:
-		_, err := mysql.NewMySQLStorage(nil)
+		_, err := mysql.NewMySQLConnection(nil)
 		if err != nil {
 			return nil, err
 		}
 		log.Printf("DB %s: Successfully connected!", dbType)
 		return &Storage{}, nil
 	case Postgres:
-		_, err := postgres.NewPostgresStorage(nil)
+		_, err := postgres.NewPostgresConnection(nil)
 		if err != nil {
 			return nil, err
 		}

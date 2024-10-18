@@ -24,7 +24,7 @@ func NewMigrate() (*m.Migrate, error) {
 
 	switch dbType {
 	case Mysql:
-		db, err := mysql.NewMySQLStorage(nil)
+		db, err := mysql.NewMySQLConnection(nil)
 		if err != nil {
 			return nil, err
 		}
@@ -33,7 +33,7 @@ func NewMigrate() (*m.Migrate, error) {
 			return nil, err
 		}
 	case Postgres:
-		db, err := postgres.NewPostgresStorage(nil)
+		db, err := postgres.NewPostgresConnection(nil)
 		if err != nil {
 			return nil, err
 		}

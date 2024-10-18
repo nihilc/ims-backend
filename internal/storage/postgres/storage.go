@@ -24,7 +24,7 @@ func (cfg PostgresConfig) formatDNS() string {
 	)
 }
 
-func NewPostgresStorage(cfg *PostgresConfig) (*sql.DB, error) {
+func NewPostgresConnection(cfg *PostgresConfig) (*sql.DB, error) {
 	var db *sql.DB
 	var err error
 	// load default if there isn't config
