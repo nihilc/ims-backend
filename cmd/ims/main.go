@@ -12,6 +12,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error can't connect database: %s", err)
 	}
+	defer db.Close()
 
 	s := server.NewServer(db)
 

@@ -21,6 +21,9 @@ type dbType string
 type Storage struct {
 }
 
+func (s *Storage) Close() {
+}
+
 func NewStorage() (*Storage, error) {
 	dbType := dbType(config.Env.DBType)
 	switch dbType {

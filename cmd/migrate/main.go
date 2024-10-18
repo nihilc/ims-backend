@@ -45,6 +45,7 @@ func handleHelp() {
 
 func handleUp() {
 	m, err := storage.NewMigrate()
+	defer m.Close()
 	if err != nil {
 		log.Fatalf("Error can't create storage migrate: %s", err)
 	}
@@ -55,6 +56,7 @@ func handleUp() {
 
 func handleDown() {
 	m, err := storage.NewMigrate()
+	defer m.Close()
 	if err != nil {
 		log.Fatalf("Error can't create storage migrate: %s", err)
 	}
